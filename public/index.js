@@ -1,8 +1,15 @@
 const canvasObj = document.getElementById("canvas1");
 const context = canvasObj.getContext("2d");
+const elemButtonDrawClock = document.querySelector('#drawClock');
+let handle;
 
 const WIDTH = 200;
 const HEIGHT = 200;
+const DRAW_CLOCK = 'Draw Clock';
+
+
+elemButtonDrawClock.innerText= DRAW_CLOCK;
+
 
 function drawClockEngine(angleDeg) {
   const centerX = WIDTH / 2,
@@ -13,23 +20,31 @@ function drawClockEngine(angleDeg) {
 }
 
 function drawClock() {
-  const angleStart = -90;
-  const intervalMs = 1000;
-  let countSeconds = 0;
-  const x = 0,
-    y = 0;
+  if (handle) {
+    clearInterval(handle);
+    handle = null;
+    elemButtonDrawClock.innerText= DRAW_CLOCK;
+  } else {
+    const angleStart = -90;
+    const intervalMs = 1000;
+    let countSeconds = 0;
+    const x = 0,
+      y = 0;
 
-  setIntervalHandler();
-  setInterval(() => {
     setIntervalHandler();
-  }, intervalMs);
+    handle = setInterval(() => {
+      setIntervalHandler();
+    }, intervalMs);
 
-  function setIntervalHandler() {
-    context.clearRect(x, y, WIDTH, HEIGHT);
-    const deltaAngle = countSeconds * (360 / 60);
-    const angleDeg = angleStart + deltaAngle;
-    drawClockEngine(angleDeg);
-    countSeconds = countSeconds == 60 ? 1 : countSeconds + 1;
+    elemButtonDrawClock.innerText= 'Stop Clock';
+
+    function setIntervalHandler() {
+      context.clearRect(x, y, WIDTH, HEIGHT);
+      const deltaAngle = countSeconds * (360 / 60);
+      const angleDeg = angleStart + deltaAngle;
+      drawClockEngine(angleDeg);
+      countSeconds = countSeconds == 60 ? 1 : countSeconds + 1;
+    }
   }
 }
 
